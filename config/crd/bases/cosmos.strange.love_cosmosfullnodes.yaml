@@ -45,6 +45,11 @@ spec:
               chain:
                 description: Blockchain-specific configuration.
                 properties:
+                  additionalStartArgs:
+                    description: Additional arguments to pass to the chain start command.
+                    items:
+                      type: string
+                    type: array
                   app:
                     description: App configuration applied to app.toml.
                     properties:

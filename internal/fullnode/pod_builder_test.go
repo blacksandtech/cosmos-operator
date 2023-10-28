@@ -269,6 +269,20 @@ func TestPodBuilder(t *testing.T) {
 		require.Contains(t, mergeConfig.Args[1], `config-merge -f toml "$TMP_DIR/app.toml" "$OVERLAY_DIR/app-overlay.toml" > "$CONFIG_DIR/app.toml`)
 	})
 
+	t.Run("additional args", func(t *testing.T) {
+		crd := defaultCRD()
+
+		crd.Spec.ChainSpec.AdditionalStartArgs = []string{"--foo", "bar"}
+
+		builder := NewPodBuilder(&crd)
+		pod, err := builder.WithOrdinal(0).Build()
+		require.NoError(t, err)
+
+		test.RequireValidMetadata(t, pod)
+
+		require.Equal(t, []string{"start", "--home", "/home/operator/cosmos", "--foo", "bar"}, pod.Spec.Containers[0].Args)
+	})
+
 	t.Run("containers - configured home dir", func(t *testing.T) {
 		crd := defaultCRD()
 		crd.Spec.ChainSpec.HomeDir = ".osmosisd"

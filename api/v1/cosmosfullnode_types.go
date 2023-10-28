@@ -503,6 +503,9 @@ type ChainSpec struct {
 	// +kubebuilder:validation:Minimum:=0
 	// +optional
 	PrivvalSleepSeconds *int32 `json:"privvalSleepSeconds"`
+	// Additional arguments to pass to the chain start command.
+	// +optional
+	AdditionalStartArgs []string `json:"additionalStartArgs"`
 }
 
 // CometConfig configures the config.toml.
